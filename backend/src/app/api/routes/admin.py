@@ -23,6 +23,10 @@ from app.schemas.product import (
 )
 from app.core.config import settings
 from app.services.product_media import products_to_out
+from app.services.catalog_cache import (
+    get_categories_payload,
+    invalidate_categories_cache,
+)
 
 
 router = APIRouter()
@@ -64,8 +68,7 @@ def _ensure_parent_valid(category: Category | None, parent_id: int | None, db: S
 
 @router.get("/categories", response_model=list[CategoryOut], dependencies=[Depends(require_roles("admin"))])
 def admin_list_categories(db: Session = Depends(get_db)):
-    rows = db.query(Category).order_by(Category.name.asc()).all()
-    return [_category_to_out(row) for row in rows]
+    return get_categories_payload(db)
 
 
 @router.get("/categories/{category_id}", response_model=CategoryOut, dependencies=[Depends(require_roles("admin"))])
@@ -88,6 +91,7 @@ def admin_create_category(payload: CategoryIn, db: Session = Depends(get_db)):
     db.add(category)
     db.commit()
     db.refresh(category)
+    invalidate_categories_cache()
     return _category_to_out(category)
 
 
@@ -109,6 +113,7 @@ def admin_update_category(category_id: int, payload: CategoryUpdate, db: Session
         setattr(category, field, value)
     db.commit()
     db.refresh(category)
+    invalidate_categories_cache()
     return _category_to_out(category)
 
 
@@ -135,6 +140,7 @@ def admin_delete_category(category_id: int, db: Session = Depends(get_db)):
 
     db.delete(category)
     db.commit()
+    invalidate_categories_cache()
     return {"success": True}
 
 

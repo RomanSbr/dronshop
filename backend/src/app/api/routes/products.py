@@ -5,9 +5,10 @@ from sqlalchemy import func
 from sqlalchemy.orm import Session
 
 from app.api.deps import get_db
-from app.models.product import Category, Inventory, Product
+from app.models.product import Inventory, Product
 from app.schemas.product import CategoryOut, ProductOut, ProductsResponse
 from app.services.product_media import products_to_out
+from app.services.catalog_cache import get_categories_payload
 
 
 router = APIRouter()
@@ -16,8 +17,8 @@ router = APIRouter()
 @router.get("/products", response_model=ProductsResponse)
 def list_products(
     db: Session = Depends(get_db),
-    category: int | None = None,
-    q: str | None = None,
+    category: int | None = Query(None, ge=1),
+    q: str | None = Query(None, min_length=1, max_length=120),
     sort: str | None = Query(
         None, pattern="^(price|name|created_at)(:(asc|desc))?$"),
     page: int = Query(1, ge=1),
@@ -88,5 +89,4 @@ def get_product(product_id: int, db: Session = Depends(get_db)):
 
 @router.get("/categories", response_model=list[CategoryOut])
 def list_categories(db: Session = Depends(get_db)):
-    rows = db.query(Category).all()
-    return [CategoryOut(id=c.id, slug=c.slug, name=c.name, parent_id=c.parent_id) for c in rows]
+    return get_categories_payload(db)
