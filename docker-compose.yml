@@ -1,0 +1,68 @@
+version: "3.9"
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: dronshop-postgres
+    environment:
+      POSTGRES_DB: dronshop
+      POSTGRES_USER: dronshop
+      POSTGRES_PASSWORD: dronshop
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    networks:
+      - dronshop-network
+
+  redis:
+    image: redis:7-alpine
+    container_name: dronshop-redis
+    ports:
+      - "6379:6379"
+    networks:
+      - dronshop-network
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: dronshop-backend
+    environment:
+      - DATABASE_URL=postgresql://dronshop:dronshop@postgres:5432/dronshop
+      - REDIS_URL=redis://redis:6379/0
+      - SECRET_KEY=${SECRET_KEY:-your-secret-key-change-in-production}
+      - ALLOWED_ORIGINS=http://frontend:80,http://localhost:80
+      - DEV_LOGIN_ENABLED=false
+      - DEV_SEED=false
+    ports:
+      - "8000:8000"
+    depends_on:
+      - postgres
+      - redis
+    networks:
+      - dronshop-network
+    volumes:
+      - uploads_data:/app/uploads_new
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: dronshop-frontend
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+    networks:
+      - dronshop-network
+    volumes:
+      - uploads_data:/usr/share/nginx/html/uploads
+
+volumes:
+  pgdata:
+  uploads_data:
+
+networks:
+  dronshop-network:
+    driver: bridge

@@ -1,0 +1,222 @@
+/* Темная тема для DronShop */
+
+.dark-theme {
+  /* Основные цвета */
+  --bg-primary: #111827;
+  --bg-secondary: #1f2937;
+  --bg-tertiary: #374151;
+  --text-primary: #f9fafb;
+  --text-secondary: #e5e7eb;
+  --text-muted: #9ca3af;
+  --border-color: #374151;
+  --accent-color: #3b82f6;
+  --accent-hover: #2563eb;
+  
+  /* Специфичные цвета для компонентов */
+  --header-bg: #1f2937;
+  --header-border: #374151;
+  --card-bg: #1f2937;
+  --input-bg: #374151;
+  --input-border: #4b5563;
+  --input-text: #f9fafb;
+  --button-bg: #3b82f6;
+  --button-hover: #2563eb;
+  --button-text: #ffffff;
+}
+
+/* Применение темной темы */
+.dark-theme body {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+}
+
+.dark-theme .site-header {
+  background-color: var(--header-bg);
+  border-bottom-color: var(--header-border);
+}
+
+.dark-theme .topbar {
+  background-color: var(--bg-secondary);
+  border-bottom-color: var(--border-color);
+}
+
+.dark-theme .iconlink {
+  border-color: var(--border-color);
+  color: var(--text-secondary);
+  background-color: var(--bg-secondary);
+}
+
+.dark-theme .iconlink:hover {
+  border-color: var(--accent-color);
+  color: var(--accent-color);
+  background-color: rgba(59, 130, 246, 0.1);
+}
+
+.dark-theme .search-input {
+  background-color: var(--input-bg);
+  border-color: var(--input-border);
+  color: var(--input-text);
+}
+
+.dark-theme .search-input:focus {
+  border-color: var(--accent-color);
+  background-color: var(--input-bg);
+}
+
+.dark-theme .mobile-menu-content {
+  background-color: var(--bg-secondary);
+}
+
+.dark-theme .mobile-menu-link {
+  color: var(--text-secondary);
+}
+
+.dark-theme .mobile-menu-link:hover {
+  color: var(--accent-color);
+}
+
+.dark-theme .mobile-menu-header {
+  border-bottom-color: var(--border-color);
+}
+
+.dark-theme .mobile-menu-section {
+  border-bottom-color: var(--border-color);
+}
+
+/* Карточки товаров */
+.dark-theme .product-card {
+  background-color: var(--card-bg);
+  border-color: var(--border-color);
+}
+
+.dark-theme .product-title {
+  color: var(--text-primary);
+}
+
+.dark-theme .product-price {
+  color: var(--text-primary);
+}
+
+.dark-theme .product-description {
+  color: var(--text-muted);
+}
+
+/* Формы */
+.dark-theme .input {
+  background-color: var(--input-bg);
+  border-color: var(--input-border);
+  color: var(--input-text);
+}
+
+.dark-theme .input:focus {
+  border-color: var(--accent-color);
+  background-color: var(--input-bg);
+}
+
+/* Кнопки */
+.dark-theme .btn {
+  background-color: var(--button-bg);
+  color: var(--button-text);
+}
+
+.dark-theme .btn:hover {
+  background-color: var(--button-hover);
+}
+
+.dark-theme .btn-secondary {
+  background-color: var(--bg-tertiary);
+  color: var(--text-primary);
+  border-color: var(--border-color);
+}
+
+.dark-theme .btn-secondary:hover {
+  background-color: var(--bg-secondary);
+  border-color: var(--accent-color);
+}
+
+/* Пагинация */
+.dark-theme .pagination-btn {
+  background-color: var(--bg-secondary);
+  color: var(--text-primary);
+  border-color: var(--border-color);
+}
+
+.dark-theme .pagination-btn:hover {
+  background-color: var(--accent-color);
+  color: var(--button-text);
+  border-color: var(--accent-color);
+}
+
+.dark-theme .pagination-btn.active {
+  background-color: var(--accent-color);
+  color: var(--button-text);
+  border-color: var(--accent-color);
+}
+
+/* Фильтры */
+.dark-theme .filter-panel {
+  background-color: var(--bg-secondary);
+  border-color: var(--border-color);
+}
+
+.dark-theme .filter-title {
+  color: var(--text-primary);
+}
+
+.dark-theme .filter-label {
+  color: var(--text-secondary);
+}
+
+/* Уведомления */
+.dark-theme .notification {
+  background-color: var(--bg-secondary);
+  border-color: var(--border-color);
+  color: var(--text-primary);
+}
+
+/* Футер */
+.dark-theme .site-footer {
+  background-color: var(--bg-secondary);
+  border-top-color: var(--border-color);
+  color: var(--text-secondary);
+}
+
+.dark-theme .footer-link {
+  color: var(--text-muted);
+}
+
+.dark-theme .footer-link:hover {
+  color: var(--accent-color);
+}
+
+/* Скелетоны */
+.dark-theme .skeleton-loader {
+  background-color: var(--bg-tertiary);
+}
+
+.dark-theme .skeleton-basic,
+.dark-theme .skeleton-image,
+.dark-theme .skeleton-title,
+.dark-theme .skeleton-price,
+.dark-theme .skeleton-button,
+.dark-theme .skeleton-line {
+  background-color: var(--bg-secondary);
+}
+
+/* Плавные переходы */
+.dark-theme * {
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+/* Поддержка системной темы */
+@media (prefers-color-scheme: dark) {
+  :root:not(.light-theme) {
+    --bg-primary: #111827;
+    --bg-secondary: #1f2937;
+    --bg-tertiary: #374151;
+    --text-primary: #f9fafb;
+    --text-secondary: #e5e7eb;
+    --text-muted: #9ca3af;
+    --border-color: #374151;
+  }
+}

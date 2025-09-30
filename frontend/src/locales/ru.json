@@ -1,0 +1,202 @@
+﻿{
+  "common": {
+    "view": "Смотреть",
+    "more": "Подробнее",
+    "loading": "Загрузка...",
+    "error": "Что-то пошло не так",
+    "retry": "Повторить",
+    "new": "Новинка",
+    "hit": "Хит",
+    "outOfStock": "Нет в наличии",
+    "inStock": "В наличии",
+    "addToCart": "В корзину",
+    "addToFavorites": "В избранное",
+    "removeFromFavorites": "Убрать из избранного",
+    "price": "Цена",
+    "rub": "₽",
+    "quickView": "Быстрый просмотр",
+    "viewDetails": "Подробнее",
+    "close": "Закрыть"
+  },
+  "home": {
+    "heroCta": "Исследовать",
+    "heroSlides": {
+      "fpv": {
+        "title": "FPV‑дроны для скоростных гонок",
+        "subtitle": "Максимальное ускорение, точный контроль и адреналин на каждой трассе",
+        "cta": "Купить FPV"
+      },
+      "cine": {
+        "title": "Кинематографические платформы",
+        "subtitle": "Стабильная съёмка в 8K без компромиссов для продакшн‑команд",
+        "cta": "Техника для съёмок"
+      },
+      "micro": {
+        "title": "Компактные дроны для путешествий",
+        "subtitle": "Снимают где угодно: умные ассистенты и защита от препятствий",
+        "cta": "Дроны для поездок"
+      }
+    },
+    "promoBlocks": {
+      "training": {
+        "title": "Обучение пилотов",
+        "description": "Индивидуальные программы и воркшопы под ваши сценарии полётов",
+        "cta": "Записаться"
+      },
+      "service": {
+        "title": "Сервисный центр",
+        "description": "Быстрая диагностика, тюнинг и апгрейды уровня гонок",
+        "cta": "Услуги"
+      }
+    },
+    "newArrivalsTitle": "Новинки",
+    "newArrivalsSubtitle": "Свежие поступления каталога",
+    "bestDealsTitle": "Лучшие предложения",
+    "bestDealsSubtitle": "Комплекты и спецпредложения",
+    "exploreCatalog": "Открыть каталог",
+    "learnMore": "Подробнее",
+    "ctaHeadline": "Готовы прокачать свой сетап?",
+    "ctaDescription": "Подберите профессиональные дроны, комплекты и сервис под ваши задачи",
+    "ctaPrimary": "Перейти в каталог",
+    "ctaSecondary": "О компании"
+  },
+  "hero": {
+    "ariaNext": "Следующий слайд",
+    "ariaPrev": "Предыдущий слайд",
+    "progressLabel": "Прогресс слайда {index}",
+    "pause": "Пауза",
+    "play": "Воспроизведение"
+  },
+  "catalog": {
+    "title": "Каталог",
+    "searchPlaceholder": "Поиск товаров",
+    "sortNewest": "Сначала новые",
+    "sortPriceAsc": "Цена: по возрастанию",
+    "sortPriceDesc": "Цена: по убыванию",
+    "sortNameAsc": "Название: А‑Я",
+    "filterApply": "Применить",
+    "filterReset": "Сбросить фильтры",
+    "count": "Найдено {count} товаров",
+    "inStockOnly": "Только в наличии",
+    "filters": {
+      "title": "Фильтры",
+      "categories": "Категории",
+      "price": "Цена",
+      "from": "От",
+      "to": "До",
+      "inStock": "Только в наличии",
+      "apply": "Применить",
+      "reset": "Сбросить",
+      "open": "Фильтры",
+      "all": "Все категории"
+    }
+  },
+  "product": {
+    "breadcrumbsHome": "Главная",
+    "breadcrumbsCatalog": "Каталог",
+    "specs": "Характеристики",
+    "description": "Описание",
+    "delivery": "Доставка",
+    "payment": "Оплата",
+    "addToCart": "Добавить в корзину",
+    "favoriteAdd": "В избранное",
+    "favoriteRemove": "В избранном"
+  },
+  "cart": {
+    "title": "Корзина",
+    "emptyTitle": "В корзине пусто",
+    "emptyDescription": "Добавьте товары из каталога, чтобы оформить заказ",
+    "backToCatalog": "В каталог",
+    "items": "товары",
+    "summaryTitle": "Итоги заказа",
+    "summaryItems": "Товары ({count})",
+    "summaryDelivery": "Доставка",
+    "summaryDeliveryValue": "Уточняется",
+    "summaryTotal": "Итого",
+    "checkoutCta": "Перейти к оформлению",
+    "clear": "Очистить корзину",
+    "confirmClear": "Очистить корзину полностью?"
+  },
+  "favorites": {
+    "title": "Избранное",
+    "emptyTitle": "Здесь пока пусто",
+    "emptyDescription": "Сохраняйте понравившиеся товары — возвращайтесь к ним в любой момент",
+    "backToCatalog": "В каталог",
+    "count": "{count} {noun}",
+    "clear": "Очистить избранное",
+    "confirmClear": "Очистить список избранного?",
+    "addToCart": "В корзину",
+    "removed": "Убрано из избранного"
+  },
+  "checkout": {
+    "title": "Оформление заказа",
+    "steps": {
+      "contact": "Контакты",
+      "delivery": "Доставка",
+      "payment": "Оплата",
+      "confirm": "Готово"
+    },
+    "emptyTitle": "В корзине пусто",
+    "emptyDescription": "Добавьте товары, чтобы оформить заказ",
+    "backToCatalog": "В каталог",
+    "contact": {
+      "title": "Контактные данные",
+      "email": "Email",
+      "firstName": "Имя",
+      "lastName": "Фамилия",
+      "phone": "Телефон"
+    },
+    "delivery": {
+      "title": "Способ доставки",
+      "address": "Адрес",
+      "city": "Город",
+      "postalCode": "Индекс",
+      "comment": "Комментарий к доставке",
+      "methods": {
+        "courier": { "name": "Курьером", "description": "По Москве 1–3 дня" },
+        "pickup": { "name": "Самовывоз", "description": "Склад у Электрозаводской" },
+        "post": { "name": "Транспортная компания", "description": "Доставка по России" }
+      }
+    },
+    "payment": {
+      "title": "Оплата",
+      "methods": {
+        "card": { "name": "Банковская карта", "description": "Visa, MasterCard, Мир" },
+        "cash": { "name": "Наличные", "description": "Оплата курьеру или при самовывозе" },
+        "online": { "name": "Электронные кошельки", "description": "ЮMoney, QIWI, СБП" }
+      }
+    },
+    "summary": {
+      "title": "Ваш заказ",
+      "items": "Товары ({count})",
+      "delivery": "Доставка",
+      "deliveryValue": "Уточняется",
+      "total": "Итого",
+      "confirm": "Оформить заказ",
+      "processing": "Обработка...",
+      "successTitle": "Заказ оформлен",
+      "successDescription": "Номер заказа {number}. Мы свяжемся с вами в ближайшее время.",
+      "newOrder": "На главную"
+    },
+    "errors": {
+      "failed": "Не удалось оформить заказ. Пожалуйста, попробуйте позже."
+    }
+  },
+  "auth": {
+    "loginTitle": "Войти / зарегистрироваться",
+    "verifyTitle": "Подтверждение",
+    "phoneLabel": "Номер телефона",
+    "phonePlaceholder": "Например +7...",
+    "sendCode": "Отправить код",
+    "loading": "Загрузка...",
+    "debugCode": "Тестовый код",
+    "codeLabel": "Код из SMS",
+    "codePlaceholder": "Введите код",
+    "verify": "Подтвердить",
+    "reset": "Изменить номер",
+    "devLink": "Вход для разработчика",
+    "requestError": "Не удалось отправить код. Попробуйте позже.",
+    "verifyError": "Неверный код подтверждения.",
+    "unknownError": "Что-то пошло не так. Попробуйте позже."
+  }
+}
