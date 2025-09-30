@@ -1,4 +1,5 @@
-﻿import { createRouter, createWebHistory } from 'vue-router'
+import { createRouter, createWebHistory } from 'vue-router'
+
 import Home from '../pages/Home.vue'
 import Catalog from '../pages/Catalog.vue'
 import Product from '../pages/Product.vue'
@@ -39,69 +40,122 @@ const routes = [
   { path: '/admin', component: AdminIndex, meta: { requiresAdmin: true } },
   { path: '/admin/products', component: AdminProducts, meta: { requiresAdmin: true } },
   { path: '/admin/categories', component: AdminCategories, meta: { requiresAdmin: true } },
-  { path: '/admin/products/:id', component: () => import('../pages/admin/AdminProductDetail.vue'), meta: { requiresAdmin: true } },
-  { path: '/admin/inventory', component: () => import('../pages/admin/AdminInventory.vue'), meta: { requiresAdmin: true } },
-  { path: '/admin/orders', component: () => import('../pages/admin/AdminOrders.vue'), meta: { requiresAdmin: true } },
-  { path: '/admin/orders/:id', component: () => import('../pages/admin/AdminOrderDetail.vue'), meta: { requiresAdmin: true } },
-  { path: '/admin/reviews', component: () => import('../pages/admin/AdminReviews.vue'), meta: { requiresAdmin: true } },
-  { path: '/admin/settings', component: () => import('../pages/admin/AdminSettings.vue'), meta: { requiresAdmin: true } }
-  ,{ path: '/admin/users', component: () => import('../pages/admin/AdminUsers.vue'), meta: { requiresAdmin: true } }
+  {
+    path: '/admin/products/:id',
+    component: () => import('../pages/admin/AdminProductDetail.vue'),
+    meta: { requiresAdmin: true }
+  },
+  {
+    path: '/admin/inventory',
+    component: () => import('../pages/admin/AdminInventory.vue'),
+    meta: { requiresAdmin: true }
+  },
+  {
+    path: '/admin/orders',
+    component: () => import('../pages/admin/AdminOrders.vue'),
+    meta: { requiresAdmin: true }
+  },
+  {
+    path: '/admin/orders/:id',
+    component: () => import('../pages/admin/AdminOrderDetail.vue'),
+    meta: { requiresAdmin: true }
+  },
+  {
+    path: '/admin/reviews',
+    component: () => import('../pages/admin/AdminReviews.vue'),
+    meta: { requiresAdmin: true }
+  },
+  {
+    path: '/admin/settings',
+    component: () => import('../pages/admin/AdminSettings.vue'),
+    meta: { requiresAdmin: true }
+  },
+  {
+    path: '/admin/users',
+    component: () => import('../pages/admin/AdminUsers.vue'),
+    meta: { requiresAdmin: true }
+  }
 ]
 
 const router = createRouter({
-  history: createWebHistory('/'),
-  routes
+  history: createWebHistory(import.meta.env.BASE_URL),
+  routes,
+  scrollBehavior() {
+    return { top: 0 }
+  }
 })
 
-function isAccessTokenValid() {
-  const t = localStorage.getItem('accessToken')
-  if (!t) return false
+function readToken(key) {
+  if (typeof window === 'undefined') {
+    return null
+  }
   try {
-    const base64Url = t.split('.')[1]
-    if (!base64Url) return false
-    let base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/')
-    const padding = (4 - (base64.length % 4)) % 4
-    if (padding) base64 += '='.repeat(padding)
-    const json = decodeURIComponent(atob(base64).split('').map(c => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)).join(''))
-    const payload = JSON.parse(json)
-    const now = Math.floor(Date.now() / 1000)
-    return payload.exp && payload.exp > now
-  } catch (e) {
+    return window.localStorage.getItem(key)
+  } catch (error) {
+    console.warn('Unable to read token from storage', error)
+    return null
+  }
+}
+
+function decodeJwtPayload(token) {
+  if (!token) return null
+  const [, payload = ''] = token.split('.')
+  if (!payload) return null
+  try {
+    const normalized = payload.replace(/-/g, '+').replace(/_/g, '/')
+    const padded = normalized.padEnd(normalized.length + ((4 - (normalized.length % 4)) % 4), '=')
+    const binary = atob(padded)
+    const uriEncoded = binary
+      .split('')
+      .map((char) => `%${char.charCodeAt(0).toString(16).padStart(2, '0')}`)
+      .join('')
+    return JSON.parse(decodeURIComponent(uriEncoded))
+  } catch (error) {
+    console.warn('Unable to decode JWT payload', error)
+    return null
+  }
+}
+
+function isAccessTokenValid() {
+  const payload = decodeJwtPayload(readToken('accessToken'))
+  if (!payload?.exp) {
     return false
   }
+  const now = Math.floor(Date.now() / 1000)
+  return payload.exp > now
 }
 
 function parseRolesFromAccess() {
-  const t = localStorage.getItem('accessToken')
-  if (!t) return []
-  try {
-    const base64Url = t.split('.')[1]
-    if (!base64Url) return []
-    let base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/')
-    const padding = (4 - (base64.length % 4)) % 4
-    if (padding) base64 += '='.repeat(padding)
-    const json = decodeURIComponent(atob(base64).split('').map(c => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)).join(''))
-    const payload = JSON.parse(json)
-    const now = Math.floor(Date.now() / 1000)
-    if (!payload.exp || payload.exp <= now) return []
-    return Array.isArray(payload.roles) ? payload.roles : []
-  } catch (e) {
+  const payload = decodeJwtPayload(readToken('accessToken'))
+  if (!payload?.exp || payload.exp <= Math.floor(Date.now() / 1000)) {
     return []
   }
+  return Array.isArray(payload.roles) ? payload.roles : []
 }
 
 router.beforeEach((to, from, next) => {
-  if (to.matched.some(r => r.meta && r.meta.requiresAuth)) {
-    if (!isAccessTokenValid()) {
-      return next('/auth')
-    }
+  if (typeof window === 'undefined') {
+    next()
+    return
   }
-  if (to.matched.some(r => r.meta && r.meta.requiresAdmin)) {
+
+  const requiresAuth = to.matched.some((record) => record.meta?.requiresAuth)
+  if (requiresAuth && !isAccessTokenValid()) {
+    next({ path: '/auth', query: { redirect: to.fullPath } })
+    return
+  }
+
+  const requiresAdmin = to.matched.some((record) => record.meta?.requiresAdmin)
+  if (requiresAdmin) {
     const roles = parseRolesFromAccess()
     if (!roles.includes('admin')) {
-      return next('/auth')
+      next('/auth')
+      return
     }
   }
+
   next()
 })
+
 export default router
+

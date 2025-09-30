@@ -1,27 +1,40 @@
-from fastapi import APIRouter, Depends, HTTPException, Body
-from sqlalchemy.orm import Session
-import jwt
 import logging
+
+import jwt
+from fastapi import APIRouter, Body, Depends, HTTPException
+from sqlalchemy.orm import Session
 
 from app.api.deps import get_db, get_current_user
 from app.core.security import create_access_token, create_refresh_token, decode_token
-from app.models.user import User, roles_list, user_roles_names
 from app.models.role import Role
+from app.models.user import User, user_roles_names
 from app.schemas.auth import (
-    RequestCodeIn,
-    VerifyCodeIn,
-    TokenPair,
+    LoginPasswordIn,
     MeOut,
     RegisterIn,
-    LoginPasswordIn,
+    RequestCodeIn,
+    TokenPair,
+    VerifyCodeIn,
 )
-from passlib.hash import bcrypt
 from app.services.sms import send_code, verify_code
+from passlib.hash import bcrypt
+
 from app.core.config import settings
 
 
 router = APIRouter()
 logger = logging.getLogger(__name__)
+
+
+def _ensure_role(db: Session, name: str) -> Role:
+    role = db.query(Role).filter(Role.name == name).first()
+    if role:
+        return role
+
+    role = Role(name=name)
+    db.add(role)
+    db.flush()
+    return role
 
 
 @router.post("/request-code")
@@ -37,12 +50,7 @@ def register(payload: VerifyCodeIn, db: Session = Depends(get_db)):
     user = db.query(User).filter(User.phone == payload.phone).first()
     if not user:
         user = User(phone=payload.phone, roles="buyer")
-        # ensure default role exists
-        buyer_role = db.query(Role).filter(Role.name == "buyer").first()
-        if not buyer_role:
-            buyer_role = Role(name="buyer")
-            db.add(buyer_role)
-            db.flush()
+        buyer_role = _ensure_role(db, "buyer")
         user.roles_rel.append(buyer_role)
         db.add(user)
         db.commit()
@@ -109,12 +117,7 @@ def register_password(payload: RegisterIn, db: Session = Depends(get_db)):
         if exists:
             raise HTTPException(status_code=400, detail="Email already registered")
 
-    # ensure base roles
-    buyer_role = db.query(Role).filter(Role.name == "buyer").first()
-    if not buyer_role:
-        buyer_role = Role(name="buyer")
-        db.add(buyer_role)
-        db.flush()
+    buyer_role = _ensure_role(db, "buyer")
 
     phone_value = cv if ct == 'phone' else f"email:{abs(hash(cv))%10**10}"
     user = User(phone=phone_value, email=cv if ct == 'email' else None, roles="buyer")
@@ -176,14 +179,7 @@ def dev_login(
 
     user = db.query(User).filter(User.phone == acc["phone"]).first()
     # ensure roles exist and are assigned
-    role_objs = []
-    for rname in acc["roles"]:
-        role = db.query(Role).filter(Role.name == rname).first()
-        if not role:
-            role = Role(name=rname)
-            db.add(role)
-            db.flush()
-        role_objs.append(role)
+    role_objs = [_ensure_role(db, rname) for rname in acc["roles"]]
 
     if not user:
         user = User(phone=acc["phone"], roles=",".join(acc["roles"]), name=login)

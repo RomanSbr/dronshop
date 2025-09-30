@@ -76,25 +76,13 @@
         </div>
 
         <div class="mt-6">
-          <h3 class="font-medium mb-2">Тестовые аккаунты:</h3>
-          <div class="bg-gray-50 p-4 rounded-md">
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div class="account-info">
-                <div class="font-medium">Администратор:</div>
-                <div>Логин: <code>admin</code></div>
-                <div>Пароль: <code>admin123</code></div>
-              </div>
-              <div class="account-info">
-                <div class="font-medium">Покупатель:</div>
-                <div>Логин: <code>buyer</code></div>
-                <div>Пароль: <code>buyer123</code></div>
-              </div>
-            </div>
-            <div class="mt-4">
-              <router-link to="/auth/dev" class="btn-secondary">
-                Войти как покупатель
-              </router-link>
-            </div>
+          <div class="bg-gray-50 border border-gray-200 rounded-xl p-4">
+            <h3 class="font-medium mb-2">Как выдать права администратора</h3>
+            <p class="text-sm text-gray-600">
+              Создайте или отредактируйте пользователя в разделе «Пользователи» и назначьте ему роль
+              администратора. При необходимости обратитесь к ответственному за безопасность — прямой вход
+              по тестовым учетным данным отключён.
+            </p>
           </div>
         </div>
       </div>
