@@ -21,15 +21,17 @@
             :class="slideClasses(i)"
             :aria-hidden="index !== i"
           >
-                        <div class="media">
+            <div class="media">
               <video
                 v-if="slide.video"
                 class="media-video"
                 :src="slide.video"
+                :ref="(el) => registerVideo(el, slide, i)"
                 autoplay
-                muted
+                :muted="true"
                 loop
                 playsinline
+                preload="auto"
               />
               <img
                 v-else
@@ -169,7 +171,7 @@
 </template>
 
 <script setup>
-import { computed, onBeforeUnmount, onMounted, ref, watch } from "vue";
+import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from "vue";
 import AsyncState from "./AsyncState.vue";
 import { useContentStore } from "../stores/content";
 import { useI18n } from "../shared/i18n";
@@ -181,6 +183,7 @@ const heroRef = ref(null);
 const index = ref(0);
 const progress = ref(0);
 const isAutoplaying = ref(true);
+const videoRegistry = new Map();
 
 let rafId = null;
 let mediaQuery = null;
@@ -199,6 +202,64 @@ const heroError = computed(() => contentStore.heroState.error);
 const autoplayLabel = computed(() =>
   isAutoplaying.value ? t("hero.pause") : t("hero.play"),
 );
+
+function getSlideKey(slide, fallbackIndex) {
+  return slide?.id ?? `slide-${fallbackIndex}`;
+}
+
+function registerVideo(el, slide, slideIndex) {
+  const key = getSlideKey(slide, slideIndex);
+
+  if (!el) {
+    videoRegistry.delete(key);
+    return;
+  }
+
+  el.muted = true;
+  el.playsInline = true;
+  el.setAttribute("muted", "");
+
+  videoRegistry.set(key, { element: el, index: slideIndex });
+
+  if (index.value === slideIndex) {
+    playVideo(el);
+  } else {
+    resetVideo(el);
+  }
+}
+
+function playVideo(video) {
+  if (!video) return;
+  const playPromise = video.play();
+  if (playPromise && typeof playPromise.catch === "function") {
+    playPromise.catch(() => {});
+  }
+}
+
+function resetVideo(video) {
+  if (!video) return;
+  video.pause();
+  try {
+    video.currentTime = 0;
+  } catch (error) {
+    // Some browsers can throw if the video metadata is not ready yet.
+  }
+}
+
+async function syncVideosWithActiveSlide() {
+  await nextTick();
+  videoRegistry.forEach(({ element, index: videoIndex }) => {
+    if (!element) return;
+    if (videoIndex === index.value) {
+      element.muted = true;
+      element.playsInline = true;
+      element.setAttribute("muted", "");
+      playVideo(element);
+    } else {
+      resetVideo(element);
+    }
+  });
+}
 
 function resolveText(slide, field) {
   if (!slide) return "";
@@ -342,6 +403,10 @@ function cleanup() {
     }
     observer = null;
   }
+  videoRegistry.forEach(({ element }) => {
+    resetVideo(element);
+  });
+  videoRegistry.clear();
 }
 
 async function reload() {
@@ -357,6 +422,7 @@ onMounted(async () => {
   if (!prefersReducedMotion.value) {
     restartAutoplay();
   }
+  syncVideosWithActiveSlide();
 });
 
 onBeforeUnmount(() => {
@@ -372,6 +438,11 @@ watch(slides, (newSlides) => {
     index.value = 0;
   }
   restartAutoplay();
+  syncVideosWithActiveSlide();
+});
+
+watch(index, () => {
+  syncVideosWithActiveSlide();
 });
 </script>
 
