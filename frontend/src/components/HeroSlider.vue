@@ -21,8 +21,18 @@
             :class="slideClasses(i)"
             :aria-hidden="index !== i"
           >
-            <div class="media">
+                        <div class="media">
+              <video
+                v-if="slide.video"
+                class="media-video"
+                :src="slide.video"
+                autoplay
+                muted
+                loop
+                playsinline
+              />
               <img
+                v-else
                 class="media-img"
                 :src="slide.image"
                 :alt="resolveText(slide, 'title')"
@@ -393,11 +403,12 @@ watch(slides, (newSlides) => {
   @apply absolute inset-0 overflow-hidden;
 }
 
-.media-img {
+.media-img,
+.media-video {
   @apply w-full h-full object-cover scale-105 transition-transform duration-[3000ms] ease-[cubic-bezier(0.25,0.1,0.25,1)];
 }
 
-.slide.active .media-img {
+.slide.active :is(.media-img, .media-video) {
   transform: scale(1.05);
 }
 

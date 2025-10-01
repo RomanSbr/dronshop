@@ -1,7 +1,7 @@
 HERO_SLIDES = [
     {
         "id": "fpv-experience",
-        "image": "https://storage.yandexcloud.net/droneshop/hero-night-flight.jpg",
+        "video": "https://storage.yandexcloud.net/droneshop/videoplayback%20(online-video-cutter.com).mp4",
         "title": "FPV-полёты без ограничений",
         "subtitle": "Топовые комплекты для дрифта, гонок и профессиональной съёмки",
         "cta": "Собрать комплект",
@@ -9,7 +9,7 @@ HERO_SLIDES = [
     },
     {
         "id": "cine-drones",
-        "image": "https://storage.yandexcloud.net/droneshop/hero-cinema-pro.jpg",
+        "video": "https://storage.yandexcloud.net/droneshop/videoplayback%20(online-video-cutter.com).mp4",
         "title": "Кинематографичная съёмка",
         "subtitle": "Готовые cinewhoop-дроны и аксессуары для креаторов",
         "cta": "Каталог cinewhoop",
@@ -17,7 +17,7 @@ HERO_SLIDES = [
     },
     {
         "id": "micro-fleet",
-        "image": "https://storage.yandexcloud.net/droneshop/hero-micro-sunrise.jpg",
+        "video": "https://storage.yandexcloud.net/droneshop/videoplayback%20(online-video-cutter.com).mp4",
         "title": "Микро‑дроны для помещений",
         "subtitle": "Тихие и безопасные квадрокоптеры для обучения и съёмок",
         "cta": "Выбрать micro",

@@ -7,6 +7,7 @@ const FALLBACK_HERO_SLIDES = [
   {
     id: 'fpv',
     image: 'https://storage.yandexcloud.net/droneshop/hero-fpv.jpg',
+    video: 'https://storage.yandexcloud.net/droneshop/videoplayback%20(online-video-cutter.com).mp4',
     link: '/catalog?segment=fpv',
     titleKey: 'home.heroSlides.fpv.title',
     subtitleKey: 'home.heroSlides.fpv.subtitle',
@@ -15,6 +16,7 @@ const FALLBACK_HERO_SLIDES = [
   {
     id: 'cine',
     image: 'https://storage.yandexcloud.net/droneshop/hero-cinema.jpg',
+    video: 'https://storage.yandexcloud.net/droneshop/videoplayback%20(online-video-cutter.com).mp4',
     link: '/catalog?segment=cinema',
     titleKey: 'home.heroSlides.cine.title',
     subtitleKey: 'home.heroSlides.cine.subtitle',
@@ -23,6 +25,7 @@ const FALLBACK_HERO_SLIDES = [
   {
     id: 'micro',
     image: 'https://storage.yandexcloud.net/droneshop/hero-micro.jpg',
+    video: 'https://storage.yandexcloud.net/droneshop/videoplayback%20(online-video-cutter.com).mp4',
     link: '/catalog?segment=micro',
     titleKey: 'home.heroSlides.micro.title',
     subtitleKey: 'home.heroSlides.micro.subtitle',
@@ -83,7 +86,8 @@ export const useContentStore = defineStore('content', () => {
         'content-hero'
       )
 
-      heroSlides.value = Array.isArray(data) && data.length ? data : FALLBACK_HERO_SLIDES
+      heroSlides.value = FALLBACK_HERO_SLIDES
+      console.log('Using fallback hero slides with videos:', FALLBACK_HERO_SLIDES)
     } catch (error) {
       heroSlides.value = FALLBACK_HERO_SLIDES
       heroState.error = error
