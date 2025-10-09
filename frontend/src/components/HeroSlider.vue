@@ -448,19 +448,19 @@ watch(index, () => {
 
 <style scoped>
 .hero-slider {
-  @apply relative overflow-hidden rounded-2xl shadow-2xl bg-gray-900 text-white;
+  @apply relative overflow-hidden bg-gray-900 text-white;
 }
 
 .hero-shell {
-  @apply relative;
+  @apply relative min-h-[520px] md:min-h-[620px] lg:min-h-[720px];
 }
 
 .slides-container {
-  @apply relative h-96 md:h-[500px] flex items-center;
+  @apply relative w-full h-full flex items-center;
 }
 
 .slide {
-  @apply absolute inset-0 flex flex-col md:flex-row items-center justify-center gap-6 md:gap-12 px-6 md:px-12 transition-opacity duration-700 ease-out;
+  @apply absolute inset-0 flex flex-col justify-center gap-6 md:gap-12 px-6 md:px-16 lg:px-24 transition-opacity duration-700 ease-out;
   opacity: 0;
   pointer-events: none;
 }
@@ -484,19 +484,19 @@ watch(index, () => {
 }
 
 .media-gradient {
-  @apply absolute inset-0 bg-gradient-to-r from-black/60 via-black/30 to-black/0;
+  @apply absolute inset-0 bg-gradient-to-r from-black/80 via-black/40 to-black/0 pointer-events-none;
 }
 
 .content {
-  @apply relative z-10 max-w-2xl text-center md:text-left space-y-6;
+  @apply relative z-10 max-w-2xl text-left space-y-6 bg-black/50 backdrop-blur-sm border border-white/10 rounded-3xl shadow-[0_35px_60px_-15px_rgba(0,0,0,0.65)] px-6 py-8 md:px-10 md:py-10;
 }
 
 .headline {
-  @apply text-3xl md:text-5xl font-bold drop-shadow-[0_2px_8px_rgba(0,0,0,0.6)];
+  @apply text-3xl md:text-5xl font-bold leading-tight;
 }
 
 .subtitle {
-  @apply text-lg md:text-xl text-white/90 drop-shadow-[0_1px_6px_rgba(0,0,0,0.5)];
+  @apply text-lg md:text-xl text-white/90;
 }
 
 .cta {
@@ -516,7 +516,7 @@ watch(index, () => {
 }
 
 .controls {
-  @apply absolute inset-x-0 bottom-6 flex justify-center gap-3 z-20;
+  @apply absolute inset-x-0 bottom-8 flex justify-center gap-3 z-20 px-6;
 }
 
 .control {
@@ -561,24 +561,28 @@ watch(index, () => {
 }
 
 @media (max-width: 768px) {
-  .slides-container {
-    @apply h-80;
+  .hero-shell {
+    @apply min-h-[460px];
+  }
+
+  .slide {
+    @apply px-5;
+  }
+
+  .content {
+    @apply px-5 py-6;
   }
 
   .controls {
-    @apply bottom-4;
+    @apply bottom-5;
   }
 
   .dots {
-    @apply bottom-16;
+    @apply bottom-12;
   }
 }
 
 @media (max-width: 640px) {
-  .slides-container {
-    @apply h-72;
-  }
-
   .headline {
     @apply text-2xl;
   }
@@ -589,6 +593,10 @@ watch(index, () => {
 
   .cta {
     @apply text-base px-5 py-3;
+  }
+
+  .content {
+    @apply space-y-4;
   }
 }
 </style>
